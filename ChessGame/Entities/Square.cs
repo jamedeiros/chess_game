@@ -5,6 +5,7 @@ namespace ChessGame.Entities
         public int Row { get; set; }
         public int Col { get; set; }
         public SquareColor Color { get; set; }
+        public Piece LocalPiece { get; set; }
 
         public Square()
         {
@@ -13,7 +14,9 @@ namespace ChessGame.Entities
 
         public override string ToString()
         {
-            return string.Format("[{0}, {1}]", Row, Col);
+            if (LocalPiece == null)
+                return "-";
+            return LocalPiece.ToString();
         }
     }
 }

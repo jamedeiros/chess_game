@@ -8,8 +8,22 @@ namespace ChessGame.Services
     {
         public void PrintSquare(Square square)
         {
-            Console.ForegroundColor = (square.Color == SquareColor.White) ? ConsoleColor.White : ConsoleColor.DarkBlue;
-            Console.Write(square);
+            Console.BackgroundColor = (square.Color == SquareColor.White) ? ConsoleColor.Cyan : ConsoleColor.DarkCyan;
+            if (square.LocalPiece != null)
+            {
+                Console.ForegroundColor = (square.LocalPiece.Color == PieceColor.White) ? ConsoleColor.White : ConsoleColor.DarkBlue;
+                Console.Write(" {0} ", square);
+            }
+            else
+            {
+                Console.Write("   ");
+            }
+        }
+
+        public void PrintMark<T>(T value)
+        {
+            Console.ResetColor();
+            Console.Write(" {0} ", value);
         }
 
         public void PrintNewLine()
@@ -21,8 +35,10 @@ namespace ChessGame.Services
         {
             var commandBuilder = new List<Action>();
 
-            for (int x = 0; x < Board.TOTAL_ROWS; x++)
+            for (int x = (Board.TOTAL_ROWS - 1); x >= 0; x--)
             {
+                var idx = x + 1;
+                commandBuilder.Add(() => PrintMark<int>(idx));
                 for (int y = 0; y < Board.TOTAL_COLS; y++)
                 {
                     Square square = board.Cell(x, y);
@@ -30,7 +46,14 @@ namespace ChessGame.Services
                 }
                 commandBuilder.Add(() => PrintNewLine());
             }
+            commandBuilder.Add(() => PrintMark<string>(" "));
+            foreach (char c in "abcdefgh")
+            {
+                commandBuilder.Add(() => PrintMark<char>(c));
+            }
+            commandBuilder.Add(() => PrintNewLine());
             commandBuilder.ForEach(cmd => cmd());
+            Console.ResetColor();
         }
     }
 }
