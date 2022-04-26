@@ -1,4 +1,6 @@
 ﻿using System;
+using ChessGame.Entities;
+using ChessGame.Services;
 
 namespace ChessGame
 {
@@ -6,7 +8,11 @@ namespace ChessGame
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Board board = new Board();
+            PrintBoardService printService = new PrintBoardService();
+
+            Console.WriteLine("Chess Board!");
+            printService.PrintBoard(board);
         }
     }
 }
