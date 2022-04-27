@@ -5,10 +5,5 @@ namespace ChessGame.Entities
         public Knight(Square position, PieceColor color) : base("N", "Knight", position, color)
         {
         }
-
-        public override bool Move(Square newSquare)
-        {
-            return false;
-        }
     }
 }

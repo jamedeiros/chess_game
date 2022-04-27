@@ -5,10 +5,5 @@ namespace ChessGame.Entities
         public Rook(Square position, PieceColor color) : base("R", "Rook", position, color)
         {
         }
-
-        public override bool Move(Square newSquare)
-        {
-            return false;
-        }
     }
 }

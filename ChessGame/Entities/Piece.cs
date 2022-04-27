@@ -22,7 +22,11 @@ namespace ChessGame.Entities
             Position.LocalPiece = this;
         }
 
-        public abstract bool Move(Square newPosition);
+        public void MoveTo(Square newPosition) 
+        {
+            Position.LocalPiece = null;
+            newPosition.LocalPiece = this;
+        }
 
         public override string ToString()
         {

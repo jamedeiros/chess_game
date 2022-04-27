@@ -1,4 +1,6 @@
+using System.Linq;
 using System.Text;
+using System.Collections.Generic;
 
 namespace ChessGame.Entities
 {
@@ -8,9 +10,11 @@ namespace ChessGame.Entities
         public const int TOTAL_COLS = 8;
 
         private Square[] _board = new Square[TOTAL_ROWS * TOTAL_COLS];
+        private List<Piece> _pieces;
 
         public Board()
         {
+            _pieces = new List<Piece>();
             SquareColor color = SquareColor.White;
             int row = -1;
 
@@ -41,37 +45,35 @@ namespace ChessGame.Entities
             // Put Pawns
             for (int i = 0; i < TOTAL_COLS; i++)
             {
-                new Pawn(Cell(1, i), PieceColor.White);
-                new Pawn(Cell(6, i), PieceColor.Black);
+                _pieces.Add(new Pawn(Cell(1, i), PieceColor.White));
+                _pieces.Add(new Pawn(Cell(6, i), PieceColor.Black));
             }
 
             // Put Rook
-            new Rook(Cell(0, 0), PieceColor.White);
-            new Rook(Cell(0, 7), PieceColor.White);
-            new Rook(Cell(7, 0), PieceColor.Black);
-            new Rook(Cell(7, 7), PieceColor.Black);
+            _pieces.Add(new Rook(Cell(0, 0), PieceColor.White));
+            _pieces.Add(new Rook(Cell(0, 7), PieceColor.White));
+            _pieces.Add(new Rook(Cell(7, 0), PieceColor.Black));
+            _pieces.Add(new Rook(Cell(7, 7), PieceColor.Black));
 
             // Put Knights
-            new Knight(Cell(0, 1), PieceColor.White);
-            new Knight(Cell(0, 6), PieceColor.White);
-            new Knight(Cell(7, 1), PieceColor.Black);
-            new Knight(Cell(7, 6), PieceColor.Black);
+            _pieces.Add(new Knight(Cell(0, 1), PieceColor.White));
+            _pieces.Add(new Knight(Cell(0, 6), PieceColor.White));
+            _pieces.Add(new Knight(Cell(7, 1), PieceColor.Black));
+            _pieces.Add(new Knight(Cell(7, 6), PieceColor.Black));
 
             // Put Bishops
-            new Bishop(Cell(0, 2), PieceColor.White);
-            new Bishop(Cell(0, 5), PieceColor.White);
-            new Bishop(Cell(7, 2), PieceColor.Black);
-            new Bishop(Cell(7, 5), PieceColor.Black);
+            _pieces.Add(new Bishop(Cell(0, 2), PieceColor.White));
+            _pieces.Add(new Bishop(Cell(0, 5), PieceColor.White));
+            _pieces.Add(new Bishop(Cell(7, 2), PieceColor.Black));
+            _pieces.Add(new Bishop(Cell(7, 5), PieceColor.Black));
 
             // Put Queens
-            new Queen(Cell(0, 3), PieceColor.White);
-            new Queen(Cell(7, 3), PieceColor.Black);
+            _pieces.Add(new Queen(Cell(0, 3), PieceColor.White));
+            _pieces.Add(new Queen(Cell(7, 3), PieceColor.Black));
 
             // Put Kings
-            new King(Cell(0, 4), PieceColor.White);
-            new King(Cell(7, 4), PieceColor.Black);
-
-
+            _pieces.Add(new King(Cell(0, 4), PieceColor.White));
+            _pieces.Add(new King(Cell(7, 4), PieceColor.Black));
         }
 
         public Square Cell(int x, int y)
@@ -93,6 +95,26 @@ namespace ChessGame.Entities
                 sb.AppendLine();
             }
             return sb.ToString();
+        }
+
+        // Move for Pawn
+        public void MoveTo(int row, int col, PieceColor color)
+        {
+            Square target = Cell(row, col);
+            Square source = null;
+
+            for (int i = row; i >= 0; i--) 
+            {
+                source = Cell(i, col);
+                if (source.LocalPiece != null)
+                    break;
+            }
+
+            if (source != null && source.LocalPiece != null) 
+            {
+                source.LocalPiece.MoveTo(target);
+                source.LocalPiece = null;
+            }
         }
     }
 }
